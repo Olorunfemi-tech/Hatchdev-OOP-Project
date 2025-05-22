@@ -1,46 +1,53 @@
-class Book{
-    title: string;
-    author: string;
-   
-    constructor(title: string, author: string) {
-        this.title = title;
-        this.author = author;
-    }
+class Task {
+  description: string;
+  status: string;
 
-    getDetails(): string{
-        return `${this.title} by ${this.author}`;
-    }
+  constructor(description: string) {
+    this.description = description;
+    this.status = "pending"; 
+  }
+
+  completeTask(): void {
+    this.status = "successful"; 
+  }
+
+  updateTask(newDescription: string): void {
+    this.description = newDescription; 
+  }
 }
 
-class Member{
-   private name: string;
-   private memberId: number;
+class TaskManager {
+  private tasks: Task[] = []; 
 
-    constructor(name: string, memberId: number) {
-        this.name = name;
-        this.memberId = memberId;
-    }
+  createTask(description: string): Task {
+    const newTask = new Task(description);
+    this.tasks.push(newTask); 
+    return newTask;
+  }
 
-    getMemberInfo(): string{
-        return `Name: ${this.name}, Member Id: ${this.memberId}`;
+  listTasks(): void {
+    this.tasks.forEach((task, index) => {
+      console.log(`${index + 1}: ${task.description} - ${task.status}`);
+    });
+  }
+
+  completeTask(index: number): void {
+    if (this.tasks[index]) {
+      this.tasks[index].completeTask(); 
+    } else {
+      console.log("Task not found!");
     }
+  }
 }
 
-class Librarian extends Member{
-    constructor(name: string, memberId: number) {
-        super(name, memberId);
-    }
+// Example usage
+const taskManager = new TaskManager();
 
-    getMemberInfo(): string {
-        return `Librarian ${super.getMemberInfo()}`
-    }
-}
+taskManager.createTask("Learn TypeScript");
+taskManager.createTask("Build a task manager");
 
-const book1 = new Book("Othello", "William Shakespeare");
-console.log(book1.getDetails());
+taskManager.listTasks(); 
 
-const member1 = new Member("Angela", 1001);
-console.log(member1.getMemberInfo());
+taskManager.completeTask(0); 
 
-const librarian = new Librarian("Mr Joe", 5001);
-console.log(librarian.getMemberInfo());
+taskManager.listTasks(); 

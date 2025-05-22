@@ -1,51 +1,43 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Book = /** @class */ (function () {
-    function Book(title, author) {
-        this.title = title;
-        this.author = author;
+"use strict";
+class Task {
+    constructor(description) {
+        this.description = description;
+        this.status = "pending"; // Default status
     }
-    Book.prototype.getDetails = function () {
-        return "".concat(this.title, " by ").concat(this.author);
-    };
-    return Book;
-}());
-var Member = /** @class */ (function () {
-    function Member(name, memberId) {
-        this.name = name;
-        this.memberId = memberId;
+    completeTask() {
+        this.status = "successful"; // Update status when completed
     }
-    Member.prototype.getMemberInfo = function () {
-        return "Name: ".concat(this.name, ", Member Id: ").concat(this.memberId);
-    };
-    return Member;
-}());
-var Librarian = /** @class */ (function (_super) {
-    __extends(Librarian, _super);
-    function Librarian(name, memberId) {
-        return _super.call(this, name, memberId) || this;
+    updateTask(newDescription) {
+        this.description = newDescription; // Update task description
     }
-    Librarian.prototype.getMemberInfo = function () {
-        return "Librarian ".concat(_super.prototype.getMemberInfo.call(this));
-    };
-    return Librarian;
-}(Member));
-var book1 = new Book("Othello", "William Shakespeare");
-console.log(book1.getDetails());
-var member1 = new Member("Angela", 1001);
-console.log(member1.getMemberInfo());
-var librarian = new Librarian("Mr Joe", 5001);
-console.log(librarian.getMemberInfo());
+}
+class TaskManager {
+    constructor() {
+        this.tasks = []; // Array to hold tasks
+    }
+    createTask(description) {
+        const newTask = new Task(description);
+        this.tasks.push(newTask); // Add new task to the tasks array
+        return newTask;
+    }
+    listTasks() {
+        this.tasks.forEach((task, index) => {
+            console.log(`${index + 1}: ${task.description} - ${task.status}`);
+        });
+    }
+    completeTask(index) {
+        if (this.tasks[index]) {
+            this.tasks[index].completeTask(); // Complete a specific task
+        }
+        else {
+            console.log("Task not found!");
+        }
+    }
+}
+// Example usage
+const taskManager = new TaskManager();
+taskManager.createTask("Learn TypeScript");
+taskManager.createTask("Build a task manager");
+taskManager.listTasks(); // List all tasks
+taskManager.completeTask(0); // Complete the first task
+taskManager.listTasks(); // List all tasks again to see the updated status
